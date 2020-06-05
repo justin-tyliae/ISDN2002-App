@@ -20,3 +20,9 @@ Route::get('/', function () {
 Route::get('/test/{data}', 'HandDataController@get_data');
 
 Route::post('/test', 'HandDataController@post_data');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::resource('device', 'DevicesController');

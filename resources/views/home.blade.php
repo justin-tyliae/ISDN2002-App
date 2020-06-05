@@ -1,0 +1,102 @@
+@php
+use Carbon\Carbon;
+$dt = Carbon::now();
+@endphp
+
+@extends('layouts.app')
+
+@section('content')
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+        @if (session('success'))
+        <div class="alert alert-success" role="alert">
+            {{ session('success') }}
+        </div>
+        @elseif (session('failed'))
+        <div class="alert alert-danger" role="alert">
+            {{ session('failed') }}
+        </div>
+        @endif
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    @if (!Auth::guest())
+                    @if ($dt->hour >= 6 AND $dt->hour < 12) Good morning, {{Auth::user()->name}}! @elseif ($dt->hour >= 12 AND $dt->hour < 18) Good afternoon, {{Auth::user()->name}}! @else Good evening, {{Auth::user()->name}}! @endif @endif </div>
+
+                            <div class="card-body">
+                                Start your rehabilitation journey!
+                            </div>
+                </div>
+            </div>
+
+            <div class="col-md-8 mt-3">
+                <div class="card">
+                    <div class="card-header">My devices</div>
+                    <div class="card-body">
+                        <div class="row justify-content-center">
+                            <a href="{{ action('DevicesController@create') }}" class="btn btn-primary">Add a device</a>
+                        </div>
+
+                        <div class="row pt-4">
+                            @if (count($devices) > 0)
+                            @foreach($devices as $device)
+                            <div class="col-xl-4 pb-3">
+                                <div class="card h-100">
+                                    <div class="card-header">
+                                        {{ $device->device_name }}
+                                        @if ($device->register_status == 0)
+                                        <span class="badge badge-pill badge-danger" style="float: right"> Not registered </span>
+                                        @else
+                                        <span class="badge badge-pill badge-success" style="float: right"> Registered </span>
+                                        @endif
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ $device->device_alias }}</h5>
+                                        <small class="card-text"> Added at {{ $device->created_at }}</small>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="row justify-content-around">
+                                            <form method="POST" action="{{ action( 'DevicesController@destroy', ['device' => $device, 'id' => $device->id] ) }}">
+                                            {{-- <form method="POST" action="{{ route( 'device.destroy', ['device' => $device] ) }}"> --}}
+                                                @csrf
+                                                @method('delete')
+                                                <button type="button" class="btn btn-danger card-img-top" onclick="confirm('{{ __("Are you sure you want to remove this device?") }}') ? this.parentElement.submit() : ''">
+                                                    <i class="fas fa-trash-alt"></i> Remove this device
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach
+                            @else
+                            <div class="card-body">
+                                <p class="text-center"> No devices available! </p>
+                            </div>
+                            @endif
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8 mt-3">
+                <div class="card">
+                    <div class="card-header">My training</div>
+
+                    <div class="card-body">
+
+                        You have no training data, get a device any try!
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endsection
