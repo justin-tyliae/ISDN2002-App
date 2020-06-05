@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\PatientCase;
 use Illuminate\Http\Request;
 
+use App\TrainingData;
+
 class PatientCaseController extends Controller
 {
     /**
@@ -61,7 +63,8 @@ class PatientCaseController extends Controller
      */
     public function show(PatientCase $patientCase)
     {
-        return view('patientTrainingData')->with('patient_case', $patientCase);
+        $training_data = TrainingData::all()->where('user_id', $patientCase->patient_id);
+        return view('patientTrainingData')->with(['patient_case' => $patientCase, 'training_data' => $training_data]);
     }
 
     /**

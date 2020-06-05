@@ -23,6 +23,8 @@ class CreateTrainingDataTable extends Migration
             $table->string('csv_path')->nullable();
             $table->integer('start_time');
             $table->integer('end_time')->nullable();
+            $table->string('duration_time')->nullable();
+            $table->boolean('finished')->default(0);
             // $table->string('duration_time')->nullable();
         });
     }

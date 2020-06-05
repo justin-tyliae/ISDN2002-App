@@ -47,9 +47,34 @@ $dt = Carbon::now();
                     Training history
                 </div>
                 <div class="card-body">
-                    <ul class="list-group">
-                        <li class="list-group-item"> training  data</li>
-                    </ul>
+                    @if (count($training_data) > 0)
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Device</th>
+                                <th scope="col">Time</th>
+                                <th scope="col">Duration</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        @foreach($training_data as $training_dat)
+                        <tbody>
+                            <tr>
+                                <td>{{ $training_dat->device_type }}</td>
+                                <td>{{ $training_dat->created_at }}</td>
+                                @if($training_dat->finished)
+                                <td> {{ $training_dat->duration_time }} </td>
+                                @else
+                                <td> On going... </td>
+                                @endif
+                                <td> <a href="{{ action('TrainingDataController@show', ['training_datum' => $training_dat]) }}"> View report </a> </td>
+                            </tr>
+                        </tbody>
+                        @endforeach
+                    </table>
+                    @else
+                    This patient has no training data.
+                    @endif
                 </div>
                 </form>
             </div>

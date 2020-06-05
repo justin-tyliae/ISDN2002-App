@@ -9,15 +9,15 @@ $dt = Carbon::now();
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
-        @if (session('success'))
-        <div class="alert alert-success" role="alert">
-            {{ session('success') }}
-        </div>
-        @elseif (session('failed'))
-        <div class="alert alert-danger" role="alert">
-            {{ session('failed') }}
-        </div>
-        @endif
+            @if (session('success'))
+            <div class="alert alert-success" role="alert">
+                {{ session('success') }}
+            </div>
+            @elseif (session('failed'))
+            <div class="alert alert-danger" role="alert">
+                {{ session('failed') }}
+            </div>
+            @endif
         </div>
     </div>
 
@@ -63,7 +63,7 @@ $dt = Carbon::now();
                                     <div class="card-footer">
                                         <div class="row justify-content-around">
                                             <form method="POST" action="{{ action( 'DevicesController@destroy', ['device' => $device, 'id' => $device->id] ) }}">
-                                            {{-- <form method="POST" action="{{ route( 'device.destroy', ['device' => $device] ) }}"> --}}
+                                                {{-- <form method="POST" action="{{ route( 'device.destroy', ['device' => $device] ) }}"> --}}
                                                 @csrf
                                                 @method('delete')
                                                 <button type="button" class="btn btn-danger card-img-top" onclick="confirm('{{ __("Are you sure you want to remove this device?") }}') ? this.parentElement.submit() : ''">
@@ -91,8 +91,34 @@ $dt = Carbon::now();
                     <div class="card-header">My training</div>
 
                     <div class="card-body">
-
+                        @if (count($training_data) > 0)
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Device</th>
+                                    <th scope="col">Time</th>
+                                    <th scope="col">Duration</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            @foreach($training_data as $training_dat)
+                            <tbody>
+                                <tr>
+                                    <td>{{ $training_dat->device_type }}</td>
+                                    <td>{{ $training_dat->created_at }}</td>
+                                    @if($training_dat->finished)
+                                    <td> {{ $training_dat->duration_time }} </td>
+                                    @else
+                                    <td> On going... </td>
+                                    @endif
+                                    <td> <a href="{{ action('TrainingDataController@show', ['training_datum' => $training_dat]) }}"> View report </a> </td>
+                                </tr>
+                            </tbody>
+                        @endforeach
+                        </table>
+                        @else
                         You have no training data, get a device any try!
+                        @endif
 
                     </div>
                 </div>
@@ -104,18 +130,18 @@ $dt = Carbon::now();
 
                     <div class="card-body">
                         @if(count($patient_cases) > 0)
-                            @foreach($patient_cases as $patient_case)
-                                From {{ $patient_case->doctor_name }}:
-                                @if ($patient_case->doctor_suggestions == null)
-                                no suggestions yet. 
-                                @else
-                                {{ $patient_case->doctor_suggestions }}
-                                @endif
-                                <small>(Writen at {{  $patient_case->updated_at }})</small>
-                                <br>
-                            @endforeach
+                        @foreach($patient_cases as $patient_case)
+                        From {{ $patient_case->doctor_name }}:
+                        @if ($patient_case->doctor_suggestions == null)
+                        no suggestions yet.
                         @else
-                        There is no suggestions from doctors yet. 
+                        {{ $patient_case->doctor_suggestions }}
+                        @endif
+                        <small>(Writen at {{ $patient_case->updated_at }})</small>
+                        <br>
+                        @endforeach
+                        @else
+                        There is no suggestions from doctors yet.
                         @endif
                     </div>
                 </div>

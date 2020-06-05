@@ -48,7 +48,7 @@ class TrainingDataController extends Controller
      */
     public function show(TrainingData $trainingData)
     {
-        //
+        return view('trainingDataDetail')->with('training_data', $trainingData);
     }
 
     /**
@@ -93,6 +93,7 @@ class TrainingDataController extends Controller
         if ($request->header == 'register') {
             $device->register_status = 1;
             $device->save();
+            return 'success';
         } elseif ($request->header == 'check') {
             return $device->register_status;
         } elseif ($request->header == 'training') {
@@ -110,6 +111,7 @@ class TrainingDataController extends Controller
                 $training_data->device_type = $device->device_type;
                 $training_data->csv_path = $csv_folder_path . $csv_file_name;
                 $training_data->start_time = time();
+                $training_data->finished = 0;
                 $training_data->save();
                 return $training_data->id;
             }
@@ -117,6 +119,8 @@ class TrainingDataController extends Controller
             {
                 $training_data = TrainingData::findOrFail($request->input('data-id'));
                 $training_data->end_time = time();
+                $training_data->duration_time = date("i:s", $training_data->end_time - $training_data->start_time);
+                $training_data->finished = 1;
                 $training_data->save();
                 return "success";
             }
@@ -133,21 +137,15 @@ class TrainingDataController extends Controller
                 $finger5 = $request->input('finger5');
     
                 // $header = array("Timestamp", "Finger1", "Finger2", "Finger3", "Finger4", "Finger5");
-    
                 $list = array($timestamp, $finger1, $finger2, $finger3, $finger4, $finger5);
-    
                 $fp = fopen($csv_file_path, 'a');
-    
                 // fputcsv($fp, $header);
-    
                 fputcsv($fp, $list);
-    
                 fclose($fp);
-    
                 return "success";
             }
             else
-                abort(404);
+                return "failed";
         }
     }
 }

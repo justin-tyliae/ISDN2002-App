@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\PatientCase;
+use App\TrainingData;
 
 class HomeController extends Controller
 {
@@ -29,7 +30,8 @@ class HomeController extends Controller
         {
             $devices = auth()->user()->devices()->get();
             $patient_cases = PatientCase::all()->where('patient_id', auth()->user()->id);
-            return view('home_elderly')->with(['devices' => $devices, 'patient_cases' => $patient_cases]);
+            $training_data = TrainingData::all()->where('user_id', auth()->user()->id);
+            return view('home_elderly')->with(['devices' => $devices, 'patient_cases' => $patient_cases, 'training_data' => $training_data]);
         }
         else if (auth()->user()->type === "Doctor")
         {
