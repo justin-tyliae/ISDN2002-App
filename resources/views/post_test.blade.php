@@ -1,17 +1,15 @@
-{{-- <ol>
-@if (count($data) > 0)
-    @foreach ($data as $dat)
-        <li> {{ $dat }} </li>
-    @endforeach
-@endif
-</ol> --}}
-
-{{ $data }}
-
 <!DOCTYPE html>
 <html>
 <body>
-<form action="/test" method="post">
+<form action="/device-post" method="post">
+  <label for="device-id">device-id:</label>
+  <input type="text" id="device-id" name="device-id"><br><br>
+  <label for="header">header:</label>
+  <input type="text" id="header" name="header"><br><br>
+  <label for="status">status:</label>
+  <input type="text" id="status" name="status"><br><br>
+  <label for="data-id">data-id:</label>
+  <input type="text" id="data-id" name="data-id"><br><br>
   <label for="timestamp">timestamp:</label>
   <input type="text" id="timestamp" name="timestamp"><br><br>
   <label for="finger1">finger1:</label>

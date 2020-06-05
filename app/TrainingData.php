@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PatientCase extends Model
+class TrainingData extends Model
 {
     //
 }

@@ -49,7 +49,7 @@ $dt = Carbon::now();
                             <div class="col-xl-4 pb-3">
                                 <div class="card h-100">
                                     <div class="card-header">
-                                        {{ $device->device_name }}
+                                        {{ $device->device_name }} ( ID: {{ $device->device_id }} )
                                         @if ($device->register_status == 0)
                                         <span class="badge badge-pill badge-danger" style="float: right"> Not registered </span>
                                         @else

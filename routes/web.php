@@ -17,9 +17,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/test/{data}', 'HandDataController@get_data');
+Route::get('/post-test/', function () {
+    return view('post_test');
+});
 
-Route::post('/test', 'HandDataController@post_data');
+Route::post('/device-post', 'TrainingDataController@post_entry');
 
 Auth::routes();
 
@@ -28,3 +30,5 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('device', 'DevicesController');
 
 Route::resource('patient-case', 'PatientCaseController');
+
+Route::resource('training-data', 'TrainingDataController');
