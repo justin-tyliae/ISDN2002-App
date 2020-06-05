@@ -26,3 +26,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('device', 'DevicesController');
+
+Route::resource('patient-case', 'PatientCaseController');

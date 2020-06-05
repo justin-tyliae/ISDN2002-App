@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\PatientCase;
+
 class HomeController extends Controller
 {
     /**
@@ -23,7 +25,16 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $devices = auth()->user()->devices()->get();
-        return view('home')->with('devices', $devices);
+        if (auth()->user()->type === "Elderly")
+        {
+            $devices = auth()->user()->devices()->get();
+            $patient_cases = PatientCase::all()->where('patient_id', auth()->user()->id);
+            return view('home_elderly')->with(['devices' => $devices, 'patient_cases' => $patient_cases]);
+        }
+        else if (auth()->user()->type === "Doctor")
+        {
+            $patient_cases = PatientCase::all()->where('doctor_id', auth()->user()->id);
+            return view('home_doctor')->with('patient_cases', $patient_cases);
+        }
     }
 }

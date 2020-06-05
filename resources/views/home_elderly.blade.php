@@ -67,7 +67,7 @@ $dt = Carbon::now();
                                                 @csrf
                                                 @method('delete')
                                                 <button type="button" class="btn btn-danger card-img-top" onclick="confirm('{{ __("Are you sure you want to remove this device?") }}') ? this.parentElement.submit() : ''">
-                                                    <i class="fas fa-trash-alt"></i> Remove this device
+                                                    </i> Remove this device
                                                 </button>
                                             </form>
                                         </div>
@@ -97,6 +97,30 @@ $dt = Carbon::now();
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-8 mt-3">
+                <div class="card">
+                    <div class="card-header"> Suggestions from doctor </div>
+
+                    <div class="card-body">
+                        @if(count($patient_cases) > 0)
+                            @foreach($patient_cases as $patient_case)
+                                From {{ $patient_case->doctor_name }}:
+                                @if ($patient_case->doctor_suggestions == null)
+                                no suggestions yet. 
+                                @else
+                                {{ $patient_case->doctor_suggestions }}
+                                @endif
+                                <small>(Writen at {{  $patient_case->updated_at }})</small>
+                                <br>
+                            @endforeach
+                        @else
+                        There is no suggestions from doctors yet. 
+                        @endif
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
     @endsection
